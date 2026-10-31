@@ -1,216 +1,160 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wetter IDE - Downloads</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
-            background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
-            color: #fff;
-            min-height: 100vh;
-            padding: 40px 20px;
-        }
-        .container { max-width: 900px; margin: 0 auto; }
-        h1 {
-            text-align: center;
-            font-size: 2.5em;
-            margin-bottom: 10px;
-            background: linear-gradient(45deg, #e94560, #f39c12);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        .subtitle {
-            text-align: center;
-            color: #aaa;
-            margin-bottom: 40px;
-            font-size: 1.1em;
-        }
-        .version-list { display: flex; flex-direction: column; gap: 15px; }
-        .version-card {
-            background: rgba(255,255,255,0.08);
-            border: 1px solid rgba(255,255,255,0.15);
-            border-radius: 12px;
-            padding: 20px 25px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
-        }
-        .version-card:hover {
-            background: rgba(255,255,255,0.15);
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
-        }
-        .version-info { display: flex; align-items: center; gap: 15px; }
-        .version-tag {
-            font-size: 1.3em;
-            font-weight: bold;
-            color: #e94560;
-            min-width: 100px;
-        }
-        .version-actions { display: flex; gap: 10px; }
-        .btn {
-            padding: 8px 18px;
-            border-radius: 8px;
-            border: none;
-            cursor: pointer;
-            font-size: 0.9em;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            color: #fff;
-        }
-        .btn-intro {
-            background: rgba(52,152,219,0.3);
-            border: 1px solid #3498db;
-        }
-        .btn-intro:hover { background: #3498db; }
-        .btn-download {
-            background: rgba(46,204,113,0.3);
-            border: 1px solid #2ecc71;
-        }
-        .btn-download:hover { background: #2ecc71; }
-        .btn-disabled {
-            background: rgba(255,255,255,0.1);
-            border: 1px solid rgba(255,255,255,0.2);
-            color: #888;
-            cursor: not-allowed;
-        }
-        .btn-history {
-            display: block;
-            margin: 30px auto;
-            padding: 12px 30px;
-            background: rgba(233,69,96,0.3);
-            border: 2px solid #e94560;
-            color: #fff;
-            border-radius: 25px;
-            font-size: 1.1em;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-align: center;
-        }
-        .btn-history:hover {
-            background: #e94560;
-            transform: scale(1.05);
-        }
-        .loading {
-            text-align: center;
-            color: #aaa;
-            font-size: 1.2em;
-            padding: 50px;
-        }
-        .error {
-            text-align: center;
-            color: #e94560;
-            font-size: 1.2em;
-            padding: 50px;
-        }
-        @media (max-width: 600px) {
-            .version-card { flex-direction: column; gap: 15px; }
-            .version-actions { flex-direction: column; width: 100%; }
-            .btn { width: 100%; text-align: center; }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wetter IDE - Downloads</title>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family:'Segoe UI','Microsoft YaHei',sans-serif;
+    background:linear-gradient(135deg,#1a1a2e,#16213e,#0f3460);
+    color:#fff; min-height:100vh; padding:40px 20px;
+  }
+  .container { max-width:900px; margin:0 auto; }
+  h1 {
+    text-align:center; font-size:2.5em; margin-bottom:10px;
+    background:linear-gradient(45deg,#e94560,#f39c12);
+    -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+  }
+  .subtitle { text-align:center; color:#aaa; margin-bottom:40px; }
+  .version-list { display:flex; flex-direction:column; gap:15px; }
+  .card {
+    background:rgba(255,255,255,.08);
+    border:1px solid rgba(255,255,255,.15);
+    border-radius:12px; padding:20px 25px;
+    display:flex; align-items:center; justify-content:space-between;
+  }
+  .vtag { font-size:1.3em; font-weight:bold; color:#e94560; min-width:110px; }
+  .meta { color:#aaa; font-size:.9em; }
+  .actions { display:flex; gap:10px; }
+  .btn {
+    padding:8px 16px; border-radius:8px; border:none; cursor:pointer;
+    font-size:.9em; text-decoration:none; color:#fff; transition:.2s;
+  }
+  .btn-intro { background:rgba(52,152,219,.3); border:1px solid #3498db; }
+  .btn-intro:hover { background:#3498db; }
+  .btn-dl { background:rgba(46,204,113,.3); border:1px solid #2ecc71; }
+  .btn-dl:hover { background:#2ecc71; }
+  .btn-disabled { background:rgba(255,255,255,.1); border:1px solid #555; color:#888; cursor:not-allowed; }
+  .btn-history {
+    display:block; margin:30px auto; padding:12px 30px;
+    background:rgba(233,69,96,.3); border:2px solid #e94560;
+    border-radius:25px; font-size:1.1em; cursor:pointer; color:#fff;
+  }
+  .btn-history:hover { background:#e94560; }
+
+  /* modal */
+  .modal {
+    position:fixed; inset:0; background:rgba(0,0,0,.7);
+    display:none; align-items:center; justify-content:center; padding:20px;
+  }
+  .modal.show { display:flex; }
+  .modal-box {
+    background:#16213e; border:1px solid #3498db; border-radius:12px;
+    max-width:700px; width:100%; max-height:80vh; overflow:auto; padding:25px;
+  }
+  .modal-box h2 { margin-bottom:15px; color:#e94560; }
+  .markdown-body { line-height:1.6; }
+  .markdown-body code { background:#0f3460; padding:2px 6px; border-radius:4px; }
+  .markdown-body pre { background:#0f3460; padding:10px; border-radius:8px; overflow:auto; }
+  .close-btn { float:right; cursor:pointer; color:#aaa; font-size:1.2em; }
+  .loading, .error { text-align:center; color:#aaa; padding:40px; }
+</style>
 </head>
 <body>
-    <div class="container">
-        <h1>🐶 Wetter IDE</h1>
-        <p class="subtitle">Wetter 语言集成开发环境</p>
-        
-        <div id="versionList" class="version-list">
-            <div class="loading">正在加载版本信息...</div>
-        </div>
-        
-        <button class="btn-history" onclick="loadAllVersions()">📜 History</button>
-    </div>
+<div class="container">
+  <h1>🐶 Wetter IDE</h1>
+  <p class="subtitle">Wetter Language Integrated Development Environment</p>
 
-    <script>
-        const REPO = 'wtr177967/wetter_IDE';
-        const API_URL = `https://api.github.com/repos/${REPO}/releases`;
-        
-        let allReleases = [];
-        let showingAll = false;
+  <div id="versionList"><div class="loading">Loading versions...</div></div>
 
-        // 页面加载时显示最新版本
-        window.onload = function() {
-            loadReleases();
-        };
+  <button class="btn-history" onclick="loadAll()">📜 History</button>
+</div>
 
-        // 获取所有 releases
-        async function loadReleases() {
-            const list = document.getElementById('versionList');
-            try {
-                const response = await fetch(API_URL);
-                if (!response.ok) throw new Error('API 请求失败');
-                
-                const releases = await response.json();
-                allReleases = releases.filter(r => !r.draft && !r.prerelease);
-                
-                if (allReleases.length === 0) {
-                    list.innerHTML = '<div class="error">暂无可用版本</div>';
-                    return;
-                }
-                
-                // 默认只显示最新版
-                if (!showingAll) {
-                    renderVersions([allReleases[0]]);
-                }
-            } catch (error) {
-                list.innerHTML = `<div class="error">加载失败: ${error.message}</div>`;
-            }
-        }
+<!-- Introduction modal -->
+<div class="modal" id="introModal" onclick="if(event.target===this)closeModal()">
+  <div class="modal-box">
+    <span class="close-btn" onclick="closeModal()">✕</span>
+    <h2 id="modalTitle"></h2>
+    <div class="markdown-body" id="modalBody"></div>
+  </div>
+</div>
 
-        // 点击 History 显示所有版本
-        async function loadAllVersions() {
-            showingAll = true;
-            const list = document.getElementById('versionList');
-            list.innerHTML = '<div class="loading">正在加载所有版本...</div>';
-            
-            try {
-                const response = await fetch(API_URL);
-                const releases = await response.json();
-                allReleases = releases.filter(r => !r.draft && !r.prerelease);
-                renderVersions(allReleases);
-            } catch (error) {
-                list.innerHTML = `<div class="error">加载失败: ${error.message}</div>`;
-            }
-        }
+<script>
+const REPO = 'wtr177967/wetter_IDE';
+const API = `https://api.github.com/repos/${REPO}/releases?per_page=100`;
 
-        // 渲染版本列表
-        function renderVersions(releases) {
-            const list = document.getElementById('versionList');
-            list.innerHTML = '';
-            
-            releases.forEach(release => {
-                const card = document.createElement('div');
-                card.className = 'version-card';
-                
-                // 检查是否有 exe 附件
-                const exeAsset = release.assets.find(a => a.name === 'Wetter_IDE_Setup.exe');
-                const canDownload = exeAsset && release.tag_name !== 'v1.0';
-                
-                const downloadBtn = canDownload 
-                    ? `<a class="btn btn-download" href="${exeAsset.browser_download_url}">⬇ Download</a>`
-                    : `<span class="btn btn-disabled">❌ 不可下载</span>`;
-                
-                card.innerHTML = `
-                    <div class="version-info">
-                        <span class="version-tag">${release.tag_name}</span>
-                        <span style="color: #aaa; font-size: 0.9em;">${release.name || release.tag_name}</span>
-                    </div>
-                    <div class="version-actions">
-                        <a class="btn btn-intro" href="${release.html_url}" target="_blank">📖 Introduction</a>
-                        ${downloadBtn}
-                    </div>
-                `;
-                
-                list.appendChild(card);
-            });
-        }
-    </script>
+let releases = [];
+let showingAll = false;
+
+window.onload = loadLatestOnly;
+
+async function fetchReleases() {
+  const r = await fetch(API, { headers: { 'Accept': 'application/vnd.github+json' } });
+  if (!r.ok) throw new Error('GitHub API error');
+  let data = await r.json();
+  return data.filter(x => !x.draft && !x.prerelease);
+}
+
+async function loadLatestOnly() {
+  try {
+    releases = await fetchReleases();
+    render([releases[0]]);
+  } catch(e) { showError(e); }
+}
+
+async function loadAll() {
+  showingAll = true;
+  document.getElementById('versionList').innerHTML = '<div class="loading">Loading all versions...</div>';
+  try {
+    if (!releases.length) releases = await fetchReleases();
+    render(releases);
+  } catch(e) { showError(e); }
+}
+
+function render(list) {
+  const box = document.getElementById('versionList');
+  box.innerHTML = '';
+  list.forEach(rel => {
+    const card = document.createElement('div');
+    card.className = 'card';
+
+    const exe = rel.assets.find(a => a.name === 'Wetter_IDE_Setup.exe');
+    const canDL = exe && rel.tag_name !== 'v1.0';
+
+    card.innerHTML = `
+      <div class="version-info">
+        <span class="vtag">${rel.tag_name}</span>
+        <span class="meta">${rel.name || ''}</span>
+      </div>
+      <div class="actions">
+        <button class="btn btn-intro" onclick="showIntro('${rel.tag_name}')">📖 Introduction</button>
+        ${canDL
+          ? `<a class="btn btn-dl" href="${exe.browser_download_url}">⬇ Download</a>`
+          : `<span class="btn btn-disabled">❌ Not Available</span>`}
+      </div>
+    `;
+    box.appendChild(card);
+  });
+}
+
+function showIntro(tag) {
+  const rel = releases.find(r => r.tag_name === tag);
+  if (!rel) return;
+  document.getElementById('modalTitle').textContent = rel.tag_name + ' — Introduction';
+  document.getElementById('modalBody').innerHTML = marked.parse(rel.body || '_No description._');
+  document.getElementById('introModal').classList.add('show');
+}
+function closeModal() {
+  document.getElementById('introModal').classList.remove('show');
+}
+
+function showError(e) {
+  document.getElementById('versionList').innerHTML =
+    `<div class="error">Failed to load: ${e.message}</div>`;
+}
+</script>
 </body>
 </html>
